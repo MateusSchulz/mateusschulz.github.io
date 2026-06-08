@@ -1,13 +1,516 @@
-<!doctype html>
-<html lang="en" data-critters-container>
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <title>Timer</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="stylesheet" href="styles.ef46db3751d8e999.css"></head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Evolução da Evangelização — Da Igreja Institucional à Era da IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3ece0;
+    --paper-2:#ece2d1;
+    --paper-3:#e6dac6;
+    --ink:#211d18;
+    --ink-soft:#6a5e4e;
+    --line:#d6c9b5;
+    --accent:#7a6248; /* overridden per era */
+    --e1:#7a6248;
+    --e2:#bf6b2b;
+    --e3:#1c7a76;
+    --e4:#414bb3;
+    --maxw:1080px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Newsreader",Georgia,serif;
+    font-size:19px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  /* paper grain */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    opacity:.5;
+    mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+  }
+
+  /* scroll progress */
+  #progress{
+    position:fixed;top:0;left:0;height:3px;width:0%;
+    background:linear-gradient(90deg,var(--e1),var(--e2) 40%,var(--e3) 72%,var(--e4));
+    z-index:50;transition:width .08s linear;
+  }
+
+  .wrap{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:0 28px;}
+
+  /* ============ HERO ============ */
+  header.hero{
+    max-width:var(--maxw);margin:0 auto;padding:88px 28px 54px;position:relative;z-index:2;
+  }
+  .eyebrow{
+    font-family:"Space Mono",monospace;font-size:12.5px;letter-spacing:.28em;
+    text-transform:uppercase;color:var(--ink-soft);margin:0 0 26px;
+  }
+  .hero h1{
+    font-family:"Fraunces",serif;font-weight:800;
+    font-size:clamp(2.7rem,7vw,5.4rem);line-height:.98;letter-spacing:-.018em;
+    margin:0 0 24px;max-width:14ch;
+  }
+  .hero h1 em{font-style:italic;font-weight:500;color:var(--e3);}
+  .hero .dek{
+    font-size:clamp(1.05rem,2.4vw,1.4rem);max-width:60ch;color:#3a342b;
+    font-weight:400;line-height:1.5;
+  }
+  .hero .dek b{font-weight:600;}
+
+  /* spectrum strip = the thesis in one glance */
+  .spectrum{margin:46px 0 0;}
+  .spectrum .bar{
+    height:10px;border-radius:6px;
+    background:linear-gradient(90deg,var(--e1),var(--e2) 34%,var(--e3) 67%,var(--e4));
+  }
+  .spectrum .labels{
+    display:flex;justify-content:space-between;margin-top:10px;
+    font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.04em;
+    color:var(--ink-soft);text-transform:uppercase;flex-wrap:wrap;gap:6px;
+  }
+
+  /* ============ INTRO ============ */
+  .intro{padding:58px 0 26px;border-top:1px solid var(--line);margin-top:54px;}
+  .intro p{margin:0 0 22px;font-size:1.15rem;line-height:1.66;}
+  .intro p.lead::first-letter{
+    font-family:"Fraunces",serif;font-weight:800;float:left;
+    font-size:4.6rem;line-height:.82;padding:6px 14px 0 0;color:var(--e2);
+  }
+  .pull{
+    font-family:"Fraunces",serif;font-style:italic;font-weight:500;
+    font-size:clamp(1.5rem,3.6vw,2.1rem);line-height:1.28;
+    margin:38px 0;padding-left:26px;border-left:4px solid var(--accent);
+    color:#332e26;max-width:30ch;--accent:var(--e3);
+  }
+
+  /* ============ TIMELINE ============ */
+  .timeline{position:relative;padding:30px 0 10px;}
+  .timeline::before{
+    content:"";position:absolute;top:14px;bottom:60px;left:149px;width:2px;
+    background:linear-gradient(180deg,var(--e1),var(--e2) 34%,var(--e3) 67%,var(--e4));
+    opacity:.55;
+  }
+
+  .era{position:relative;display:grid;grid-template-columns:150px 1fr;gap:40px;padding:34px 0 56px;}
+  .era-rail{text-align:right;padding-right:4px;position:relative;}
+  .era-num{
+    display:block;font-family:"Fraunces",serif;font-weight:800;
+    font-size:3.3rem;line-height:.9;color:var(--accent);letter-spacing:-.02em;
+  }
+  .era-years{
+    display:block;margin-top:8px;font-family:"Space Mono",monospace;font-size:11.5px;
+    letter-spacing:.05em;color:var(--ink-soft);text-transform:uppercase;
+  }
+  .era-node{
+    position:absolute;left:150px;top:14px;width:15px;height:15px;border-radius:50%;
+    background:var(--accent);transform:translateX(-50%);
+    box-shadow:0 0 0 5px var(--paper),0 0 0 6px var(--accent);z-index:3;
+  }
+
+  .era-tag{
+    font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 10px;
+  }
+  .era h2{
+    font-family:"Fraunces",serif;font-weight:700;font-size:clamp(1.7rem,4vw,2.5rem);
+    line-height:1.05;letter-spacing:-.015em;margin:0 0 18px;max-width:20ch;
+  }
+  .era p{margin:0 0 18px;}
+  .era .sub{
+    font-family:"Fraunces",serif;font-weight:600;font-size:1.12rem;
+    color:var(--accent);margin:28px 0 10px;letter-spacing:-.01em;
+  }
+  .era ul{margin:0 0 18px;padding:0;list-style:none;}
+  .era ul li{position:relative;padding-left:22px;margin-bottom:11px;}
+  .era ul li::before{
+    content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;
+    border-radius:2px;background:var(--accent);transform:rotate(45deg);
+  }
+
+  /* example + caution callouts */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:24px 0 6px;}
+  .card{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:14px;
+    padding:20px 20px 18px;position:relative;overflow:hidden;
+    transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s;
+  }
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);}
+  .card:hover{transform:translateY(-4px);box-shadow:0 14px 30px -16px rgba(33,29,24,.4);}
+  .card .ck{
+    font-family:"Space Mono",monospace;font-size:10.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 9px;
+  }
+  .card h4{font-family:"Fraunces",serif;font-weight:600;font-size:1.16rem;margin:0 0 7px;line-height:1.1;}
+  .card p{font-size:.96rem;line-height:1.5;margin:0;color:#403a30;}
+  .card .big{font-family:"Fraunces",serif;font-weight:800;font-size:1.7rem;color:var(--accent);display:block;line-height:1;margin-bottom:2px;}
+
+  .note{
+    margin:26px 0 4px;padding:18px 22px;border-radius:12px;
+    background:linear-gradient(0deg,var(--paper-3),var(--paper-2));
+    border:1px dashed var(--accent);font-size:1rem;line-height:1.55;
+  }
+  .note b{font-weight:600;color:var(--accent);}
+
+  /* ============ SYNTHESIS TABLE ============ */
+  .synth{border-top:1px solid var(--line);padding:62px 0 30px;}
+  .synth .eyebrow{margin-bottom:14px;}
+  .synth h2{
+    font-family:"Fraunces",serif;font-weight:800;font-size:clamp(1.9rem,4.6vw,3rem);
+    letter-spacing:-.02em;margin:0 0 10px;line-height:1.02;
+  }
+  .synth .intro-line{max-width:60ch;color:#3a342b;margin:0 0 34px;font-size:1.08rem;}
+  .table{width:100%;overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;min-width:680px;}
+  thead th{
+    font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+    text-align:left;padding:14px 14px;color:var(--paper);vertical-align:bottom;font-weight:700;
+  }
+  thead th:nth-child(1){background:#3a342b;border-radius:10px 0 0 0;}
+  thead th:nth-child(2){background:var(--e1);}
+  thead th:nth-child(3){background:var(--e2);}
+  thead th:nth-child(4){background:var(--e3);}
+  thead th:nth-child(5){background:var(--e4);border-radius:0 10px 0 0;}
+  tbody td,tbody th{padding:15px 14px;border-bottom:1px solid var(--line);font-size:.98rem;line-height:1.4;vertical-align:top;}
+  tbody th{
+    font-family:"Space Mono",monospace;font-weight:700;font-size:11px;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--ink-soft);text-align:left;width:120px;background:var(--paper-2);
+  }
+  tbody tr:hover td{background:var(--paper-2);}
+
+  /* ============ CONCLUSION ============ */
+  .conc{border-top:1px solid var(--line);padding:62px 0 24px;}
+  .conc .eyebrow{margin-bottom:18px;}
+  .conc h2{font-family:"Fraunces",serif;font-weight:800;font-size:clamp(1.9rem,4.6vw,3rem);letter-spacing:-.02em;margin:0 0 24px;line-height:1.03;max-width:18ch;}
+  .conc p{font-size:1.13rem;line-height:1.66;margin:0 0 22px;max-width:64ch;}
+  .conc .verse{
+    font-family:"Fraunces",serif;font-style:italic;font-weight:500;
+    font-size:clamp(1.4rem,3.4vw,1.9rem);line-height:1.3;margin:40px 0 8px;
+    color:#332e26;text-align:center;max-width:26ch;margin-left:auto;margin-right:auto;
+  }
+  .conc .verse span{display:block;font-family:"Space Mono",monospace;font-style:normal;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-top:16px;}
+
+  /* ============ FOOTER ============ */
+  footer{
+    background:#211d18;color:#cdbfa9;margin-top:70px;position:relative;z-index:2;
+    padding:48px 28px 56px;
+  }
+  footer .fwrap{max-width:var(--maxw);margin:0 auto;}
+  footer h3{font-family:"Fraunces",serif;font-weight:600;color:#f3ece0;font-size:1.2rem;margin:0 0 16px;}
+  footer .src{font-family:"Newsreader",serif;font-size:.92rem;line-height:1.7;color:#b6a890;columns:2;column-gap:34px;}
+  footer .meta{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.05em;color:#8a7c66;margin-top:28px;border-top:1px solid #3a342b;padding-top:20px;text-transform:uppercase;}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1);}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* responsive */
+  @media (max-width:760px){
+    body{font-size:18px;}
+    .timeline::before{display:none;}
+    .era{grid-template-columns:1fr;gap:14px;padding:26px 0 44px;}
+    .era-rail{text-align:left;display:flex;align-items:baseline;gap:16px;padding-right:0;}
+    .era-num{font-size:2.5rem;}
+    .era-years{margin-top:0;}
+    .era-node{display:none;}
+    footer .src{columns:1;}
+    .intro p.lead::first-letter{font-size:3.6rem;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;}
+    .reveal{opacity:1;transform:none;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* hero load animation */
+  @keyframes rise{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+  .hero .eyebrow,.hero h1,.hero .dek,.hero .spectrum{opacity:0;animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards;}
+  .hero h1{animation-delay:.12s;}
+  .hero .dek{animation-delay:.26s;}
+  .hero .spectrum{animation-delay:.42s;}
+</style>
+</head>
 <body>
-  <app-root></app-root>
-<script src="runtime.fceb38962f0cab49.js" type="module"></script><script src="polyfills.28be7624deaa273a.js" type="module"></script><script src="main.04c1b083d82096c5.js" type="module"></script></body>
+<div id="progress"></div>
+
+<header class="hero">
+  <p class="eyebrow">Ensaio · Estratégias de evangelização · 1908 — 2026</p>
+  <h1>Como a igreja aprendeu a <em>evangelizar de novo</em></h1>
+  <p class="dek">Em pouco mais de um século, a forma de anunciar a fé passou por quatro grandes viradas. A trajetória vai do <b>programa</b> ao <b>relacionamento</b>, e do templo à tela — sem que a mensagem central jamais mudasse.</p>
+  <div class="spectrum">
+    <div class="bar"></div>
+    <div class="labels">
+      <span>Instituição</span><span>Relacionamento</span><span>Digital</span><span>Inteligência Artificial</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="intro reveal">
+    <p class="lead">A história recente da evangelização não é uma sucessão de técnicas, mas uma mudança de gravidade. Durante boa parte do século XX, a igreja evangelizou organizando-se: criava programas, departamentos e organizações que formavam pessoas ao longo de anos. O alvo era trazer o mundo para dentro de suas estruturas. Era um modelo atracional — "venha até nós".</p>
+    <p>A partir do fim daquele século, esse centro de gravidade começou a se deslocar. Primeiro para o relacionamento, com a explosão das células e dos pequenos grupos. Depois para o ambiente digital, acelerado por uma pandemia. E, mais recentemente, para a inteligência artificial, capaz de conversar sobre fé em qualquer idioma e a qualquer hora.</p>
+    <div class="pull">Cada nova era não apagou a anterior — ela a redirecionou.</div>
+    <p>O que se segue é um mapa dessas quatro eras: o que as definiu, o que mudou de uma para a outra e o fio que costura todas elas.</p>
+  </section>
+
+  <div class="timeline">
+
+    <!-- ERA 1 -->
+    <section class="era reveal" style="--accent:var(--e1);">
+      <div class="era-rail">
+        <span class="era-num">01</span>
+        <span class="era-years">Séc. XX</span>
+        <span class="era-node"></span>
+      </div>
+      <div class="era-body">
+        <p class="era-tag">A Era Institucional</p>
+        <h2>O modelo programático e organizacional</h2>
+        <p>Por décadas, a estratégia dominante foi estruturar a evangelização em instituições. A igreja se dividia em organizações segmentadas por idade e por gênero, cada uma com currículo, graduações, acampamentos e literatura própria. A lógica era formativa: moldar o caráter cristão e o conhecimento missionário de uma pessoa ao longo de muitos anos.</p>
+        <p>Era um sistema sólido, denominacionalmente coeso e profundo em doutrina — mas também rígido, centrado na instituição e dependente de o interessado se aproximar dos seus programas.</p>
+        <p class="sub">A assinatura desta era</p>
+        <ul>
+          <li><b>Centro de gravidade:</b> a instituição e seus programas.</li>
+          <li><b>Postura:</b> atracional — "venha até nós, participe das nossas atividades".</li>
+          <li><b>Métrica de sucesso:</b> frequência e formação ao longo do tempo.</li>
+          <li><b>Quem evangeliza:</b> especialistas e organizações designadas.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ERA 2 -->
+    <section class="era reveal" style="--accent:var(--e2);">
+      <div class="era-rail">
+        <span class="era-num">02</span>
+        <span class="era-years">1990s — 2000s</span>
+        <span class="era-node"></span>
+      </div>
+      <div class="era-body">
+        <p class="era-tag">A Virada Relacional</p>
+        <h2>Células e pequenos grupos</h2>
+        <p>A primeira grande virada moveu o centro da instituição para o relacionamento. Em vez de trazer pessoas a um programa, a ideia passou a ser alcançá-las pela rede de relacionamentos do cotidiano — nas casas, no trabalho, em qualquer lugar — e discipular cada novo convertido para que ele, por sua vez, reproduzisse o processo. O fundamento bíblico evocado era a igreja de Atos, que se reunia de casa em casa, e o método de Jesus com os doze.</p>
+        <p>Duas correntes marcaram o movimento. De um lado, o modelo celular do G12, nascido na Colômbia com César Castellanos e introduzido no Brasil em 1998 por Renê Terra Nova, com células que se multiplicam nos lares. De outro, uma tradição mais antiga de pequenos grupos, influenciada por autores como Ralph Neighbour Jr. e pelo movimento dos Navegadores (anos 1930), ancorada no discipulado um a um — "transmite a homens fiéis e aptos para também ensinarem a outros".</p>
+        <p class="sub">A assinatura desta era</p>
+        <ul>
+          <li><b>Centro de gravidade:</b> o relacionamento e a multiplicação.</li>
+          <li><b>Postura:</b> missional — "vamos até você", evangelismo por relacionamentos.</li>
+          <li><b>Valores:</b> mutualidade, liderança compartilhada, discipulado um a um, prestação de contas.</li>
+          <li><b>Quem evangeliza:</b> todo membro, e não apenas especialistas.</li>
+        </ul>
+        <div class="note">
+          <b>Um ponto de atenção.</b> Os modelos celulares mais agressivos, como o G12 e o MDA, nasceram em contexto neopentecostal e carregam práticas e ênfases — incluindo traços de teologia da prosperidade — que se difundiram até por denominações históricas. A virada relacional foi genuína; o pacote teológico que a acompanhou nem sempre.
+        </div>
+      </div>
+    </section>
+
+    <!-- ERA 3 -->
+    <section class="era reveal" style="--accent:var(--e3);">
+      <div class="era-rail">
+        <span class="era-num">03</span>
+        <span class="era-years">2020 →</span>
+        <span class="era-node"></span>
+      </div>
+      <div class="era-body">
+        <p class="era-tag">A Era Digital</p>
+        <h2>Da tela ao relacionamento</h2>
+        <p>A pandemia forçou a igreja para dentro das telas, e o que começou como emergência virou estratégia permanente. Mas a lição mais importante desta era é que presença digital não é o mesmo que postar e esperar. O que funciona é pensar em <b>funil</b>: mover a pessoa de um conteúdo anônimo para uma conversa, da conversa para um relacionamento e do relacionamento para a comunidade. Cada ferramenta serve a uma etapa desse caminho.</p>
+
+        <p class="sub">Redes sociais — a descoberta</p>
+        <p>É onde o estranho encontra a mensagem. O que rende hoje é o vídeo curto e vertical, o testemunho real e o conteúdo organizado em torno das dores das pessoas — ansiedade, luto, casamento — e não em torno de avisos institucionais. Constância vale mais que volume.</p>
+
+        <p class="sub">WhatsApp — onde a conversão acontece</p>
+        <p>Aqui está o coração do funil. O conteúdo serve para levar a pessoa a um canal onde gente real conversa e ora por ela. Canais de transmissão entregam devocionais a muitos sem o caos dos grupos, e a automação leve organiza o acompanhamento sem matar o toque humano.</p>
+
+        <p class="sub">Aplicativos — a base do discipulado</p>
+        <p>Em vez de construir um app próprio, a tendência é apoiar-se no que já existe e funciona em escala global, conectando o leitor a planos e à comunidade.</p>
+
+        <div class="cards">
+          <div class="card">
+            <p class="ck">Caso real · WhatsApp</p>
+            <h4>O funil de Moema</h4>
+            <p>Uma igreja em bairro nobre de São Paulo usou vídeos direcionados por endereço e interesse para orar pelos vizinhos, conduzindo-os a um canal de WhatsApp. Resultado: dezenas de batismos de pessoas que conheceram a igreja pela internet.</p>
+          </div>
+          <div class="card">
+            <p class="ck">Caso real · Apps</p>
+            <h4>YouVersion</h4>
+            <span class="big">1 bilhão</span>
+            <p>de instalações em 2025, com mais de 3.600 traduções, milhares de planos de leitura, o Verso do Dia e a possibilidade de ler em grupo — uma ponte natural entre o digital e os pequenos grupos.</p>
+          </div>
+          <div class="card">
+            <p class="ck">Dado · Escala</p>
+            <h4>~200 mil batismos</h4>
+            <p>contabilizados pela Igreja Adventista na América do Sul em 2025, impulsionados em parte por um trabalho de evangelismo digital iniciado em 2023 e centrado, no início, em oração.</p>
+          </div>
+        </div>
+        <p class="sub">A assinatura desta era</p>
+        <ul>
+          <li><b>Centro de gravidade:</b> a presença onde as pessoas já estão.</li>
+          <li><b>Postura:</b> "estamos no seu feed, na sua conversa".</li>
+          <li><b>Métrica:</b> alcance e engajamento que se convertem em relacionamento.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ERA 4 -->
+    <section class="era reveal" style="--accent:var(--e4);">
+      <div class="era-rail">
+        <span class="era-num">04</span>
+        <span class="era-years">2023 →</span>
+        <span class="era-node"></span>
+      </div>
+      <div class="era-body">
+        <p class="era-tag">A Fronteira da IA</p>
+        <h2>Evangelizar em qualquer idioma, a qualquer hora</h2>
+        <p>A virada mais recente acrescenta ao alcance digital uma nova dimensão: a disponibilidade permanente e inteligente. Assistentes virtuais já tiram dúvidas bíblicas em tempo real, em escala impossível para uma equipe humana — e algumas igrejas começam a usar IA também dentro do próprio culto.</p>
+
+        <div class="cards">
+          <div class="card">
+            <p class="ck">Caso real · IA</p>
+            <h4>Esperança / 7chat</h4>
+            <span class="big">~500 mil</span>
+            <p>pessoas em mais de 110 países estudaram a Bíblia, ao longo de cinco anos, com a instrutora virtual adventista — que funciona por site ou WhatsApp e responde no idioma em que a pergunta é feita.</p>
+          </div>
+          <div class="card">
+            <p class="ck">Caso real · IA</p>
+            <h4>Léia & avatares bíblicos</h4>
+            <p>Uma Assembleia de Deus no interior de SP criou uma assistente virtual inspirada em duas secretárias reais e usa IA para "dar vida" a personagens como Davi e Moisés, que leem textos nas telas durante o culto.</p>
+          </div>
+          <div class="card">
+            <p class="ck">Insight · SEO espiritual</p>
+            <h4>Você treina as IAs</h4>
+            <p>Como ChatGPT e Gemini aprendem com o conteúdo da internet, o que a igreja publica hoje molda as respostas que essas ferramentas darão amanhã sobre a fé. Produzir bom conteúdo virou ato evangelístico.</p>
+          </div>
+        </div>
+
+        <div class="note">
+          <b>O limite que a própria era reconhece.</b> A IA é ponte, não substituta. Há uma tensão assumida entre aproveitar a tecnologia e preservar o contato humano e a integridade doutrinária — e, como advertiu o Papa Leão XIV, a IA não replica o discernimento moral nem a capacidade de formar relações genuínas. Ela abre portas; a pessoa entra pela porta de um irmão real.
+        </div>
+        <p class="sub">A assinatura desta era</p>
+        <ul>
+          <li><b>Centro de gravidade:</b> a inteligência conversacional sempre disponível.</li>
+          <li><b>Postura:</b> "estamos aqui a qualquer hora, em qualquer língua".</li>
+          <li><b>Métrica:</b> relacionamento em escala, mediado por humanos e por IA.</li>
+        </ul>
+      </div>
+    </section>
+
+  </div><!-- /timeline -->
+
+  <section class="synth reveal">
+    <p class="eyebrow">Síntese</p>
+    <h2>A lógica da transformação</h2>
+    <p class="intro-line">Lado a lado, as quatro eras revelam padrões claros: o ministério se descentralizou, a postura passou de "venha" para "vamos", e o lugar da fé deixou de ser apenas o templo.</p>
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>01 · Institucional</th>
+            <th>02 · Relacional</th>
+            <th>03 · Digital</th>
+            <th>04 · IA</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Centro</th>
+            <td>A instituição</td>
+            <td>O relacionamento</td>
+            <td>A presença digital</td>
+            <td>A conversa inteligente</td>
+          </tr>
+          <tr>
+            <th>Postura</th>
+            <td>"Venha até nós"</td>
+            <td>"Vamos até você"</td>
+            <td>"Estamos onde você está"</td>
+            <td>"Disponíveis a qualquer hora"</td>
+          </tr>
+          <tr>
+            <th>Métrica</th>
+            <td>Frequência e formação</td>
+            <td>Multiplicação de discípulos</td>
+            <td>Alcance e engajamento</td>
+            <td>Relacionamento em escala</td>
+          </tr>
+          <tr>
+            <th>Quem ministra</th>
+            <td>Especialistas e organizações</td>
+            <td>Todo membro</td>
+            <td>Criadores de conteúdo</td>
+            <td>Humanos + IA</td>
+          </tr>
+          <tr>
+            <th>Onde acontece</th>
+            <td>Templo e programas</td>
+            <td>Casas</td>
+            <td>Telas e feeds</td>
+            <td>Qualquer lugar, em tempo real</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="conc reveal">
+    <p class="eyebrow">Conclusão</p>
+    <h2>O método muda; a mensagem permanece</h2>
+    <p>Olhando para o conjunto, percebe-se que nenhuma era simplesmente substituiu a anterior — cada uma corrigiu uma carência da que veio antes. As células recuperaram a intimidade relacional que os grandes programas haviam perdido. O digital estendeu o relacionamento para além da geografia. E a IA estende a disponibilidade para além do horário.</p>
+    <p>Há, porém, uma constante por baixo de toda essa mudança: a trajetória sempre aponta para o relacionamento genuíno. Mesmo a tecnologia mais avançada cumpre melhor seu papel quando funciona como um funil que conduz a pessoa a uma comunidade real. A ferramenta serve ao relacionamento; o método serve à mensagem.</p>
+    <p>É por isso que o caminho mais sábio nunca foi escolher uma era contra as outras, mas integrá-las: a profundidade formativa da primeira, o calor relacional da segunda, o alcance da terceira e a disponibilidade da quarta. O mandato não envelhece — só os meios de cumpri-lo são reinventados a cada geração.</p>
+    <p class="verse">"Ide por todo o mundo e pregai o evangelho a toda criatura."<span>Marcos 16:15</span></p>
+  </section>
+
+</div><!-- /wrap -->
+
+<footer>
+  <div class="fwrap">
+    <h3>Fontes consultadas</h3>
+    <div class="src">
+      Notícias Adventistas e Rede Novo Tempo (evangelismo digital, instrutora virtual Esperança/7chat) · Gazeta do Povo (IA nas igrejas brasileiras) · Metrópoles (avatares bíblicos em culto) · Pascom Brasil e Vatican News (IA e evangelização católica) · YouVersion (marco de 1 bilhão de instalações) · Comunhão (estratégia de pequenos grupos) · Gospel Mais e portais denominacionais (modelo G12 e história das células) · inChurch e Tudo pelo Reino (comunicação multiplataforma e marketing de conteúdo) · Sociedade Tecnológica (estratégia digital das principais igrejas, 2025).
+    </div>
+    <p class="meta">Documento-síntese · Pesquisa de 2025–2026 · A evolução das estratégias de evangelização</p>
+  </div>
+</footer>
+
+<script>
+  // scroll progress
+  var bar=document.getElementById('progress');
+  function onScroll(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    var p=max>0?(h.scrollTop||document.body.scrollTop)/max*100:0;
+    bar.style.width=p+'%';
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  // reveal on scroll
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+    });
+  },{threshold:0.12,rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+</script>
+</body>
 </html>
